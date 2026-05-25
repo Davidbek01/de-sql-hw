@@ -22,8 +22,35 @@ FROM customers
 WHERE region IS NOT NULL;
 
 5. Подсчитать кол-во поставщиков в каждой из стран и отсортировать результаты группировки по убыванию кол-ва
-6. Подсчитать суммарный вес заказов (в которых известен регион) по странам, затем отфильтровать по суммарному весу (вывести только те записи где суммарный вес больше 2750) и отсортировать по убыванию суммарного веса.
-7. Выбрать все уникальные страны заказчиков и поставщиков и отсортировать страны по возрастанию
-8. Выбрать такие страны в которых "зарегистированы" одновременно и заказчики и поставщики и работники.
-9. Выбрать такие страны в которых "зарегистированы" одновременно заказчики и поставщики, но при этом в них не "зарегистрированы" работники.
+SELECT country, COUNT(*) AS supplier_count
+FROM suppliers
+GROUP BY country
+ORDER BY supplier_count DESK;
 
+6. Подсчитать суммарный вес заказов (в которых известен регион) по странам, затем отфильтровать по суммарному весу (вывести только те записи где суммарный вес больше 2750) и отсортировать по убыванию суммарного веса.
+SELECT ship_country, SUM(freight) AS total_freight
+FROM orders
+WHERE region IS NOT NULL
+GROUP BY ship_country
+HAVING SUM(freight) > 2750
+ORDER BY total_freight DESK;
+
+7. Выбрать все уникальные страны заказчиков и поставщиков и отсортировать страны по возрастанию
+SELECT country FROM customers
+UNION 
+SELECT country FROM suppliers
+ORDER BY country ASC;
+
+8. Выбрать такие страны в которых "зарегистированы" одновременно и заказчики и поставщики и работники.
+SELECT country FROM customers
+INTERSECT
+SELECT country FROM suppliers
+INTERSECT
+SELECT country FROM employees;
+
+9. Выбрать такие страны в которых "зарегистированы" одновременно заказчики и поставщики, но при этом в них не "зарегистрированы" работники.
+SELECT country FROM customers
+INTERSECT
+SELECT country FROM suppliers
+EXCEPT
+SELECT country FROM employees;
