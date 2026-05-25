@@ -1,7 +1,7 @@
 1. Выбрать все заказы из стран France, Austria, Spain
 SELECT *
-FROM orders
-WHERE country IN ('France', 'Austria', 'Spain')
+FROM ordersS
+WHERE ship_country IN ('France', 'Austria', 'Spain')
 
 2. Выбрать все заказы, отсортировать по required_date (по убыванию) и отсортировать по дате отгрузке (по возрастанию)
 SELECT *
